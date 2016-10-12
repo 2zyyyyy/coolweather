@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.superxingyun.coolweather.R;
 
@@ -19,6 +20,9 @@ import db.CoolWeatherDB;
 import model.City;
 import model.County;
 import model.Province;
+import util.HttpCallbackListener;
+import util.HttpUtil;
+import util.Utility;
 
 /*
  * Created by 月满轩尼诗 on 2016/10/11.
@@ -153,31 +157,90 @@ public class ChooseAreaActivity extends Activity {
     private void queryFromServer(final String code, final String type) {
         String address;
         if (!TextUtils.isEmpty(code)) {
-            address = "http://apis.baidu.com/heweather/weather/free"
+            address = "http://www.weather.com.cn/data/list3/city" + code + ".xml";
+        } else {
+            address = "http://www.weather.com.cn/data/list3/city.xml";
+        }
+        //String address = "http://v.juhe.cn/weather/citys?key=5b8a32f652fa0e19b882d66e2198ff97";
+        showProgressDialog();
+
+        HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
+            @Override
+            public void onFinish(String response) {
+                boolean result = false;
+                if ("province".equals(type)) {
+                    result = Utility.handleProvincesResponse(coolWeatherDB, response);
+                } else if ("city".equals(type)) {
+                    result =Utility.handleCitiesResponse(coolWeatherDB, response, selectedProvince.getId());
+                } else if ("county".equals(type)) {
+                    result = Utility.handleCountiesResponse(coolWeatherDB, response, selectedCity.getId());
+                }
+                if (result) {
+                    //通过runOnUiThread()方法回到主线程处理逻辑
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeProgressDialog();
+                            if ("province".equals(type)) {
+                                queryProvinces();
+                            } else if ("city".equals(type)) {
+                                queryCities();
+                            } else if ("county".equals(type)) {
+                                queryCounties();
+                            }
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onError(Exception e) {
+                //通过runOnUiThread()方法回到主线程
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeProgressDialog();
+                        Toast.makeText(ChooseAreaActivity.this, "加载失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 显示进度条对话框
+     */
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("正在加载...");
+            progressDialog.setCanceledOnTouchOutside(false);//防止触摸屏幕其他区域进度条消失到时奔溃
+        }
+        progressDialog.show();
+    }
+
+    /**
+     * 关闭进度条
+     */
+
+    public void closeProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * 捕获Back键，根据当前的级别来判断，此时应该返回是列表、省列表还是直接退出
+     */
+    @Override
+    public void onBackPressed() {
+        if (currentLevel == LEVEL_COUNTY) {
+            queryCities();
+        } else if (currentLevel == LEVEL_CITY) {
+            queryProvinces();
+        } else {
+            finish();
+        }
+    }
 }
 
 
