@@ -37,7 +37,7 @@ public class ChooseAreaActivity extends Activity {
     public static final int LEVEL_COUNTY =2;
 
     private ProgressDialog progressDialog;
-    private TextView titletext;
+    private TextView titleText;
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private CoolWeatherDB coolWeatherDB;
@@ -74,7 +74,7 @@ public class ChooseAreaActivity extends Activity {
         setContentView(R.layout.choose_area);
 
         listView = (ListView) findViewById(R.id.list_view);
-        titletext = (TextView) findViewById(R.id.title_text);
+        titleText = (TextView) findViewById(R.id.title_text);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
         coolWeatherDB = CoolWeatherDB.getInstance(this);
@@ -106,7 +106,7 @@ public class ChooseAreaActivity extends Activity {
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            titletext.setText("中国");
+            titleText.setText("中国");
             currentLevel = LEVEL_PROVINCE;
         } else {
             queryFromServer(null, "province");
@@ -125,7 +125,7 @@ public class ChooseAreaActivity extends Activity {
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            titletext.setText(selectedProvince.getProvinceName());
+            titleText.setText(selectedProvince.getProvinceName());
             currentLevel = LEVEL_CITY;
         } else {
             queryFromServer(selectedProvince.getProvinceCode(), "city");
@@ -144,7 +144,7 @@ public class ChooseAreaActivity extends Activity {
             }
             adapter.notifyDataSetChanged();//更新数据
             listView.setSelection(0);
-            titletext.setText(selectedCity.getCityName());
+            titleText.setText(selectedCity.getCityName());
             currentLevel = LEVEL_COUNTY;
         } else {
             queryFromServer(selectedCity.getCityCode(), "county");

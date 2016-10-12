@@ -25,7 +25,7 @@ public class Utility {
                     Province province = new Province();
                     province.setProvinceCode(array[0]);
                     province.setProvinceName(array[1]);
-                    //强解析出来的数据存储到Province表
+                    //将解析出来的数据存储到Province表
                     coolWeatherDB.saveProvince(province);
                 }
                 return true;
