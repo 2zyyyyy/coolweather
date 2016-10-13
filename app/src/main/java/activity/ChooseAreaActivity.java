@@ -259,7 +259,3 @@ public class ChooseAreaActivity extends Activity {
         }
     }
 }
-
-
-
-

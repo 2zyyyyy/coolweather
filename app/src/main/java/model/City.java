@@ -5,8 +5,11 @@ package model;
  */
 
 public class City {
-    private int id,proviceId;
-    private String cityName,cityCode;
+
+    private int id;
+    private int provinceId;
+    private String cityName;
+    private String cityCode;
 
     public int getId() {
         return id;
@@ -29,10 +32,10 @@ public class City {
         this.cityCode = cityCode;
     }
 
-    public int getProviceId() {
-        return  proviceId;
+    public int getProvinceId() {
+        return provinceId;
     }
-    public void setProviceId(int proviceId) {
-        this.proviceId = proviceId;
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
     }
 }

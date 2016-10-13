@@ -57,7 +57,7 @@ public class Utility {
                     City city = new City();
                     city.setCityCode(array[0]);
                     city.setCityName(array[1]);
-                    city.setProviceId(provinceId);
+                    city.setProvinceId(provinceId);
                     //将解析出来的数据存储到City表
                     coolWeatherDB.saveCity(city);
                 }
@@ -121,8 +121,8 @@ public class Utility {
      * 将服务器返回的所有天气信息存储到SharedPreferences文件中。
      */
     public static void saveWeatherInfo(Context context, String cityName,
-           String weatherCode, String temp1, String temp2, String weatherDesp,
-           String publishTime) {
+                                       String weatherCode, String temp1, String temp2, String weatherDesp,
+                                       String publishTime) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日", Locale.CHINA);
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
@@ -163,4 +163,3 @@ public class Utility {
 
 
 }
-
