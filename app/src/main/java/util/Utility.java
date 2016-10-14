@@ -97,7 +97,7 @@ public class Utility {
      * 解析服务器返回的JSON数据，并将解析出的数据存储到本地。
      */
 
-    public static void handleWeatherRessponse(Context context , String response) {
+    public static void handleWeatherResponse(Context context , String response) {
 
 
         try {

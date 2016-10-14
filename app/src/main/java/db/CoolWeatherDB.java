@@ -29,7 +29,7 @@ public class CoolWeatherDB {
 
     public static final int VERSION = 1;
 
-    private static  CoolWeatherDB coolWeatherDB;
+    private static CoolWeatherDB coolWeatherDB;
 
     private SQLiteDatabase db;
 
@@ -38,8 +38,8 @@ public class CoolWeatherDB {
      */
 
     private CoolWeatherDB(Context context) {
-        CoolWeatherOpenHelper dbHelper = new CoolWeatherOpenHelper(context, DB_NAME, null ,VERSION);//4个参数
-        db =dbHelper.getWritableDatabase();
+        CoolWeatherOpenHelper dbHelper = new CoolWeatherOpenHelper(context, DB_NAME, null, VERSION);//4个参数
+        db = dbHelper.getWritableDatabase();
     }
 
     /**
@@ -47,7 +47,7 @@ public class CoolWeatherDB {
      */
 
     public synchronized static CoolWeatherDB getInstance(Context context) {
-        if (coolWeatherDB ==null) {
+        if (coolWeatherDB == null) {
             coolWeatherDB = new CoolWeatherDB(context);
         }
         return coolWeatherDB;
@@ -84,9 +84,6 @@ public class CoolWeatherDB {
                 list.add(province);
             } while (cursor.moveToNext());
         }
-        if (cursor != null) {
-            cursor.close();
-        }
         return list;
     }
 
@@ -110,7 +107,7 @@ public class CoolWeatherDB {
 
     public List<City> loadCities(int provinceId) {
         List<City> list = new ArrayList<City>();
-        Cursor cursor = db.query("City", null, "province_id = ?", new String[] {String.valueOf(provinceId)}, null, null , null);
+        Cursor cursor = db.query("City", null, "province_id = ?", new String[]{String.valueOf(provinceId)}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 City city = new City();
@@ -120,9 +117,6 @@ public class CoolWeatherDB {
                 city.setProvinceId(provinceId);
                 list.add(city);
             } while (cursor.moveToNext());
-        }
-        if (cursor != null) {
-            cursor.close();
         }
         return list;
     }
@@ -147,7 +141,7 @@ public class CoolWeatherDB {
 
     public List<County> loadCounties(int cityId) {
         List<County> list = new ArrayList<County>();
-        Cursor cursor = db.query("County", null, "city_id = ?", new String[] {String.valueOf(cityId)}, null, null ,null);
+        Cursor cursor = db.query("County", null, "city_id = ?", new String[]{String.valueOf(cityId)}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 County county = new County();
@@ -157,9 +151,6 @@ public class CoolWeatherDB {
                 county.setCityId(cityId);
                 list.add(county);
             } while (cursor.moveToNext());
-        }
-        if (cursor != null){
-            cursor.close();
         }
         return list;
     }
