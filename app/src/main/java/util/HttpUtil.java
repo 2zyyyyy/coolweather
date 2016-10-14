@@ -36,6 +36,11 @@ public class HttpUtil {
                     }
                 } catch (Exception e) {
                     if (listener != null) {
+                        //回调onError()方法
+                        listener.onError(e);
+                    }
+                } finally {
+                    if (connection != null) {
                         connection.disconnect();
                     }
                 }

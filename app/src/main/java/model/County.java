@@ -6,7 +6,7 @@ package model;
 
 public class County {
     private int id,cityId;
-    String countyName,countyCode;
+    private String countyName,countyCode;
 
     public int getId() {
         return id;
